@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1 id="displayHeading"></h1>
-
+    <p id="uuidOut">You have</p>
     <p id="randomName">NoJavascript</p>
     <p id="timer">13:37</p>
 
@@ -27,14 +27,28 @@
         const start = new Date();
 
         // get a UUID for sending to the server in the future
-        const uuid = crypto.randomUUID();
+        var uuid;
+        try {
+            uuid = localStorage.getItem('qrtimer_uuid');
+        } catch (info) {
+            console.error('Error accessing localStorage:', info);
+        }
+
+        if (!uuid) {
+            uuid = crypto.randomUUID();
+            localStorage.setItem('qrtimer_uuid', uuid);
+        }
+
         console.log(uuid);
+
 
         // Display the place in the heading
         const displayHeading = document.getElementById('displayHeading');
         displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
         const title = document.getElementById('title');
         title.textContent = place ? `${place} QRtimer` : 'QRtimer';
+        const uuidDisplay = document.getElementById('uuidOut');
+        uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
         const dataArray = []
         try{
