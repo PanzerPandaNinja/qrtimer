@@ -32,9 +32,9 @@
 
         // Display the place in the heading
         const displayHeading = document.getElementById('displayHeading');
-        displayHeading.textContent = place ? `${place}` : 'QRtimer';
+        displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
         const title = document.getElementById('title');
-        title.textContent = place ? `${place}` : 'QRtimer'
+        title.textContent = place ? `${place} QRtimer` : 'QRtimer';
 
         const dataArray = []
         try{
@@ -166,7 +166,6 @@
 
 
     function storeLocally(postNumber, place, post, start) {
-
 
         //console.log(earlier_data);
         const data = {                
