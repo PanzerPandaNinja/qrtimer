@@ -52,50 +52,50 @@
 
         const dataArray = []
         try{
-            //const earlier_data = localStorage.getItem('qrtimer_' + place)
+            const earlier_data = localStorage.getItem('qrtimer_' + place)
 
-            const earlier_data = `
-                {
-                    "postNumber": 1,
-                    "post": "Bunn",
-                    "start": "2024-07-12T22:20:42.579Z"
-                },
-                {
-                    "postNumber": 2,
-                    "post": "Bunn",
-                    "start": "2024-07-12T22:24:42.579Z"
-                },
-                {
-                    "postNumber": 3,
-                    "post": "Topp",
-                    "start": "2024-07-12T22:28:42.579Z"
-                },
-                {
-                    "postNumber": 4,
-                    "post": "Bunn",
-                    "start": "2024-07-12T22:30:42.579Z"
-                },
-                {
-                    "postNumber": 5,
-                    "post": "Bunn",
-                    "start": "2024-07-12T22:34:42.579Z"
-                },
-                {
-                    "postNumber": 6,
-                    "post": "Topp",
-                    "start": "2024-07-12T22:38:42.579Z"
-                }
-            `;
+            // const earlier_data = `
+            //     {
+            //         "postNumber": 1,
+            //         "post": "Bunn",
+            //         "start": "2024-07-12T22:20:42.579Z"
+            //     },
+            //     {
+            //         "postNumber": 2,
+            //         "post": "Bunn",
+            //         "start": "2024-07-12T22:24:42.579Z"
+            //     },
+            //     {
+            //         "postNumber": 3,
+            //         "post": "Topp",
+            //         "start": "2024-07-12T22:28:42.579Z"
+            //     },
+            //     {
+            //         "postNumber": 4,
+            //         "post": "Bunn",
+            //         "start": "2024-07-12T22:30:42.579Z"
+            //     },
+            //     {
+            //         "postNumber": 5,
+            //         "post": "Bunn",
+            //         "start": "2024-07-12T22:34:42.579Z"
+            //     },
+            //     {
+            //         "postNumber": 6,
+            //         "post": "Topp",
+            //         "start": "2024-07-12T22:38:42.579Z"
+            //     }
+            // `;
 
             // Parse the data into an array of objects
-            const tempArray = JSON.parse(`[${earlier_data}]`);
+            const dataArray = JSON.parse(`[${earlier_data}]`);
 
             console.log(dataArray); // Check the parsed array
 
             //const tempArray = JSON.parse(earlier_data)
-            tempArray.forEach(element => {
-                dataArray.push(element); 
-            });
+            // tempArray.forEach(element => {
+            //     dataArray.push(element); 
+            // });
 
         }
         catch(info){
@@ -137,7 +137,7 @@
         function createTableFromLocalStorage(place) {
             const dataString = localStorage.getItem('qrtimer_' + place); 
             if (!dataString) {
-                console.error('No data found in localStorage.');
+                console.info('No data found in localStorage.');
                 return;
             }
 
