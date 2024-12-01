@@ -33,12 +33,12 @@
         const title = document.getElementById('title');
         const uuidDisplay = document.getElementById('uuidOut');
         const name = document.getElementById('randomName');
-        var randomName
+        var randomName;
         const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
         const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
+        const now = new Date();
 
         // Get a UUID for sending to the server in the future
-        
         try {
             uuid = localStorage.getItem('qrtimer_uuid');
         } catch (info) {
@@ -52,14 +52,11 @@
 
         console.log(uuid);
 
-        // Display the place in the heading
-        
+        // Display the place in the heading     
         displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
         title.textContent = place ? `${place} QRtimer` : 'QRtimer';
         uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
-        // Retrieve existing data from local storage
-        
         try {
             const earlier_data = localStorage.getItem('qrtimer_' + place);
             if (earlier_data) {
@@ -79,32 +76,65 @@
             randomName = getRandomName().toString();
             localStorage.setItem('qrtimer_randomName', randomName);
         }
-
         
         name.textContent = randomName ? `${randomName}` : 'randomName';
 
-
-
-        // Update the timer every millisecond
-        setInterval(updateTimer, 1);
+        // Update the timer every second
+        setInterval(updateTimer, 1000);
 
         const postNumber = dataArray.length + 1;
         console.log("postNumber: " + postNumber);
-        const latestEntry = dataArray[dataArray.length - 1];
-        console.log(latestEntry);
-        if (post == latestEntry.post) {
-            console.log("PAUSE")
-        }
-        else {
-            console.log("Running ")
+
+        if (dataArray.length > 0) {
+            const latestEntry = dataArray[dataArray.length - 1];
+            console.log(latestEntry);
+            const now = new Date();
+            if (post === latestEntry.post) {
+                console.log(checkPreviousTime(latestEntry.start, now));    
+            console.log("PAUSE");            
+            } else {
+                console.log("Running");
+            }
         }
 
         // Call the function to create the table
         storeLocally(postNumber, place, post, start);
         createTableFromLocalStorage(place);
 
-                // Function to generate a random name
-                function getRandomName() {
+        // ****** Functions **********
+        function formatDateTime(dateTime) {
+            const date = new Date(dateTime);
+
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
+
+            return `${hours}:${minutes}:${seconds}:${milliseconds}`;
+        }
+
+        function checkPreviousTime(previousTime, start) {
+            const previous = new Date(previousTime);
+
+            // Calculate the difference in milliseconds
+            const difference = start - previous;
+
+            // Convert the difference to a more readable format (hours, minutes, seconds, milliseconds)
+            const hours = Math.floor(difference / 3600000);
+            const minutes = Math.floor((difference % 3600000) / 60000);
+            const seconds = Math.floor((difference % 60000) / 1000);
+            const milliseconds = difference % 1000;
+
+            return {
+                hours: hours,
+                minutes: minutes,
+                seconds: seconds,
+                milliseconds: milliseconds
+            };
+        }
+        
+        // Function to generate a random name
+        function getRandomName() {
             const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
             const randomColor = colors[Math.floor(Math.random() * colors.length)];
             return `${randomColor}${randomAnimal}`;
@@ -167,8 +197,13 @@
                     const row = document.createElement('tr');
                     for (const key in item) {
                         const td = document.createElement('td');
-                        td.textContent = item[key];
-                        row.appendChild(td);
+                        if (key === "start") {
+                            const time = formatDateTime(item[key]);
+                            td.textContent = time;
+                        } else {
+                            td.textContent = item[key];
+                        }
+                            row.appendChild(td);
                     }
                     tbody.appendChild(row);
                 });
@@ -179,8 +214,6 @@
                 console.error('Error parsing data from localStorage:', error);
             }
         }
-
-
     </script>
 </body>
 
