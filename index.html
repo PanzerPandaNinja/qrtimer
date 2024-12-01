@@ -34,6 +34,8 @@
         const uuidDisplay = document.getElementById('uuidOut');
         const name = document.getElementById('randomName');
         var randomName
+        const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
+        const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
 
         // Get a UUID for sending to the server in the future
         
@@ -66,12 +68,6 @@
         } catch (info) {
             console.info('No data, assuming first post', info);
         }
-
-        // List of animals and colors
-        const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
-        const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
-
-
         
         try {
             randomName = localStorage.getItem('qrtimer_randomName');
