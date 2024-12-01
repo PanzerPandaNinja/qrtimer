@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,6 +13,7 @@
         }
     </style>
 </head>
+
 <body>
     <h1 id="displayHeading"></h1>
     <p id="uuidOut">You have</p>
@@ -25,9 +27,16 @@
         const post = urlParams.get('post');
         const backend = urlParams.get('backend'); // address for the backend server, yet to be determined
         const start = new Date();
+        let dataArray = [];
+        var uuid;
+        const displayHeading = document.getElementById('displayHeading');
+        const title = document.getElementById('title');
+        const uuidDisplay = document.getElementById('uuidOut');
+        const name = document.getElementById('randomName');
+        var randomName
 
         // Get a UUID for sending to the server in the future
-        var uuid;
+        
         try {
             uuid = localStorage.getItem('qrtimer_uuid');
         } catch (info) {
@@ -42,15 +51,13 @@
         console.log(uuid);
 
         // Display the place in the heading
-        const displayHeading = document.getElementById('displayHeading');
+        
         displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
-        const title = document.getElementById('title');
         title.textContent = place ? `${place} QRtimer` : 'QRtimer';
-        const uuidDisplay = document.getElementById('uuidOut');
         uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
         // Retrieve existing data from local storage
-        let dataArray = [];
+        
         try {
             const earlier_data = localStorage.getItem('qrtimer_' + place);
             if (earlier_data) {
@@ -64,13 +71,8 @@
         const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
         const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
 
-        // Function to generate a random name
-        function getRandomName() {
-            const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            return `${randomColor}${randomAnimal}`;
-        }
-        var randomName
+
+        
         try {
             randomName = localStorage.getItem('qrtimer_randomName');
         } catch (info) {
@@ -81,9 +83,36 @@
             randomName = getRandomName().toString();
             localStorage.setItem('qrtimer_randomName', randomName);
         }
-        //const randomName = getRandomName().toString();
-        const name = document.getElementById('randomName');
+
+        
         name.textContent = randomName ? `${randomName}` : 'randomName';
+
+
+
+        // Update the timer every millisecond
+        setInterval(updateTimer, 1);
+
+        const postNumber = dataArray.length + 1;
+        console.log("postNumber: " + postNumber);
+        const latestEntry = dataArray[dataArray.length - 1];
+        console.log(latestEntry);
+        if (post == latestEntry.post) {
+            console.log("PAUSE")
+        }
+        else {
+            console.log("Running ")
+        }
+
+        // Call the function to create the table
+        storeLocally(postNumber, place, post, start);
+        createTableFromLocalStorage(place);
+
+                // Function to generate a random name
+                function getRandomName() {
+            const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            return `${randomColor}${randomAnimal}`;
+        }
 
         // Function to update the timer
         function updateTimer() {
@@ -97,15 +126,25 @@
 
             document.getElementById('timer').textContent = `${post}: ${hours}:${minutes}:${seconds}.${milliseconds}`;
         }
-        
-        // Update the timer every millisecond
-        setInterval(updateTimer, 1);
 
-        const postNumber = dataArray.length + 1;
-        console.log("postNumber: " + postNumber);
+        function storeLocally(postNumber, place, post, start) {
+            const data = {
+                postNumber,
+                post,
+                start
+            };
+            dataArray.push(data);
+
+            // Convert the data object to a JSON string
+            const dataString = JSON.stringify(dataArray);
+
+            // Store the data in localStorage
+            localStorage.setItem('qrtimer_' + place, dataString);
+            console.log(dataString);
+        }
 
         function createTableFromLocalStorage(place) {
-            const dataString = localStorage.getItem('qrtimer_' + place); 
+            const dataString = localStorage.getItem('qrtimer_' + place);
             if (!dataString) {
                 console.info('No data found in localStorage.');
                 return;
@@ -145,26 +184,8 @@
             }
         }
 
-    // Call the function to create the table
-    createTableFromLocalStorage(place);
 
-    function storeLocally(postNumber, place, post, start) {
-        const data = {                
-            postNumber,
-            post,
-            start
-        };
-        dataArray.push(data);
-
-        // Convert the data object to a JSON string
-        const dataString = JSON.stringify(dataArray);
-
-        // Store the data in localStorage
-        localStorage.setItem('qrtimer_' + place, dataString);
-        console.log(dataString);
-    }
-    
-    storeLocally(postNumber, place, post, start);
     </script>
 </body>
+
 </html>
