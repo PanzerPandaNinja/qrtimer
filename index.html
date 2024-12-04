@@ -6,10 +6,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title">Title</title>
     <style>
-        /* Add some basic styling if needed */
+        /* Light mode styles */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        h1 {
+            color: #444;
+        }
+
+        p {
+            color: #555;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e0e0e0;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e1e1e;
+                color: #ccc;
+            }
+
+            h1 {
+                color: #ddd;
+            }
+
+            p {
+                color: #bbb;
+            }
+
+            table {
+                border: 1px solid #444;
+            }
+
+            th,
+            td {
+                border: 1px solid #555;
+            }
+
+            th {
+                background-color: #333;
+            }
         }
     </style>
 </head>
@@ -65,7 +121,7 @@
         } catch (info) {
             console.info('No data, assuming first post', info);
         }
-        
+
         try {
             randomName = localStorage.getItem('qrtimer_randomName');
         } catch (info) {
@@ -76,7 +132,7 @@
             randomName = getRandomName().toString();
             localStorage.setItem('qrtimer_randomName', randomName);
         }
-        
+
         name.textContent = randomName ? `${randomName}` : 'randomName';
 
         // Update the timer every second
@@ -90,8 +146,8 @@
             console.log(latestEntry);
             const now = new Date();
             if (post === latestEntry.post) {
-                console.log(checkPreviousTime(latestEntry.start, now));    
-            console.log("PAUSE");            
+                console.log(checkPreviousTime(latestEntry.start, now));
+                console.log("PAUSE");
             } else {
                 console.log("Running");
             }
@@ -132,7 +188,7 @@
                 milliseconds: milliseconds
             };
         }
-        
+
         // Function to generate a random name
         function getRandomName() {
             const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
@@ -203,7 +259,7 @@
                         } else {
                             td.textContent = item[key];
                         }
-                            row.appendChild(td);
+                        row.appendChild(td);
                     }
                     tbody.appendChild(row);
                 });
