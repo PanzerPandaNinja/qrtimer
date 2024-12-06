@@ -14,3 +14,5 @@ The app uses a GUID from your phone and browser to identify you for two hours af
 ## Admin
 To create a qrcode you need to log on to the admin panel and make a track. The track must have a name and number of posts, it can also have a distance between the posts and a description of the track.
 The admin setup can be downloaded as a json-file for safe-keeping, nothing is stored on the servers, the json-file can then be uploaded when changes are needed.
+
+Alternative: When you create an organisation you register an url to the logo, a name for the organization and an address for the backendserver if you want.
