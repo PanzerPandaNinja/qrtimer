@@ -8,6 +8,11 @@ Go to the next qrcode and scan it, the time it took will be displayed. If you wa
 If you have used this site before and not removed the cookie it each day will show up as a link under the history tab aloing with a summary.
 You can download your data as a json-file using the download button and upload it using the upload button. This is usefull if you change devices and want your history.
 
+
+Maybe: You can see historic data on the history link on the bottom. This will pause your timer.
+Maybe: You can see a graph on the graph link on the bottom. This will pause your timer.
+
+
 ## Data and cookies
 The app uses a GUID from your phone and browser to identify you for two hours after last scan from your phone. Your timings is saved in a cookie on your phone only, when its deleted so are all your data.
 
