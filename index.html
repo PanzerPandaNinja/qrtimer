@@ -20,7 +20,7 @@
             height: 100vh;
             margin: 0;
         }
-
+        .small-font { font-size: 8px;  }
         h1 {
             color: #444;
         }
@@ -52,7 +52,7 @@
                 background-color: #1e1e1e;
                 color: #ccc;
             }
-
+            .small-font { font-size: 8px;  }
             h1 {
                 color: #ddd;
             }
@@ -97,9 +97,13 @@
     <img src="qrtimerLogo.jpg" alt="qrtimerLogo" width="200" height="200">
     </div>
     <h1 id="displayHeading"></h1>
-    <p id="uuidOut">NoJavascript, no uuid</p>
-    <p id="userName">NoJavascript, no userName</p>
+    
+    <H3 id="userName">NoJavascript, no userName</H3>
     <p id="timer">13:37</p>
+
+    <p id="uuidOut" class="small-font">NoJavascript, no uuid</p>
+
+
 
     <script>
         // Get the URL search parameters
@@ -115,8 +119,21 @@
         const uuidDisplay = document.getElementById('uuidOut');
         const name = document.getElementById('userName');
         var userName;
-        const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
-        const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
+        const animals = [
+            'Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear',
+            'Elephant', 'Tiger', 'Zebra', 'Kangaroo', 'Monkey', 'Horse',
+            'Rabbit', 'Deer', 'Fox', 'Wolf', 'Sheep', 'Goat',
+            'Cow', 'Pig', 'Chicken', 'Duck', 'Goose', 'Turkey',
+            'Peacock', 'Ostrich', 'Penguin', 'Dolphin', 'Whale', 'Shark'
+        ];
+
+        const colors = [
+            'Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black', 'Orange', 'Pink', 'White',
+            'Brown', 'Gray', 'Cyan', 'Magenta', 'Lime', 'Teal', 'Navy', 'Maroon', 'Olive',
+            'Gold', 'Silver', 'Beige', 'Coral', 'Turquoise', 'Lavender', 'Indigo', 'Violet',
+            'Peach', 'Mint', 'Salmon', 'Aqua'
+        ];
+
         const now = new Date();
         const today = new Date().toISOString().split('T')[0];
 
@@ -138,7 +155,7 @@
         // Display the place in the heading     
         displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
         title.textContent = place ? `${place} QRtimer` : 'QRtimer';
-        uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
+        
 
         try {
             const earlier_data = localStorage.getItem('qrtimer_' + place + '_' + today);
@@ -183,6 +200,8 @@
         // Call the function to create the table
         storeLocally(postNumber, place, post, start);
         createTableFromLocalStorage(place);
+
+        uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
         // ****** Functions **********
         function formatDateTime(dateTime) {
@@ -294,7 +313,9 @@
                 console.error('Error parsing data from localStorage:', error);
             }
         }
+        
     </script>
+    
 </body>
 
 </html>
