@@ -118,6 +118,8 @@
         const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
         const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
         const now = new Date();
+        const today = new Date().toISOString().split('T')[0];
+
 
         // Get a UUID for sending to the server in the future
         try {
@@ -139,7 +141,7 @@
         uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
         try {
-            const earlier_data = localStorage.getItem('qrtimer_' + place);
+            const earlier_data = localStorage.getItem('qrtimer_' + place + '_' + today);
             if (earlier_data) {
                 dataArray = JSON.parse(earlier_data);
             }
@@ -242,16 +244,13 @@
             };
             dataArray.push(data);
 
-            // Convert the data object to a JSON string
-            const dataString = JSON.stringify(dataArray);
-
-            // Store the data in localStorage
-            localStorage.setItem('qrtimer_' + place, dataString);
+            const dataString = JSON.stringify(dataArray); // Convert the data object to a JSON string
+            localStorage.setItem('qrtimer_' + place + '_' + today, dataString); // Store the data in localStorage
             console.log(dataString);
         }
 
         function createTableFromLocalStorage(place) {
-            const dataString = localStorage.getItem('qrtimer_' + place);
+            const dataString = localStorage.getItem('qrtimer_' + place + '_' + today);
             if (!dataString) {
                 console.info('No data found in localStorage.');
                 return;
