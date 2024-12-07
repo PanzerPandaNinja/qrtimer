@@ -97,8 +97,8 @@
     <img src="qrtimerLogo.jpg" alt="qrtimerLogo" width="200" height="200">
     </div>
     <h1 id="displayHeading"></h1>
-    <p id="uuidOut">You have</p>
-    <p id="randomName">NoJavascript</p>
+    <p id="uuidOut">NoJavascript, no uuid</p>
+    <p id="userName">NoJavascript, no userName</p>
     <p id="timer">13:37</p>
 
     <script>
@@ -113,8 +113,8 @@
         const displayHeading = document.getElementById('displayHeading');
         const title = document.getElementById('title');
         const uuidDisplay = document.getElementById('uuidOut');
-        const name = document.getElementById('randomName');
-        var randomName;
+        const name = document.getElementById('userName');
+        var userName;
         const animals = ['Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear'];
         const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Black'];
         const now = new Date();
@@ -150,17 +150,17 @@
         }
 
         try {
-            randomName = localStorage.getItem('qrtimer_randomName');
+            userName = localStorage.getItem('qrtimer_userName');
         } catch (info) {
             console.error('Error accessing localStorage:', info);
         }
 
-        if (!randomName) {
-            randomName = getRandomName().toString();
-            localStorage.setItem('qrtimer_randomName', randomName);
+        if (!userName) {
+            userName = getRandomName().toString();
+            localStorage.setItem('qrtimer_userName', userName);
         }
 
-        name.textContent = randomName ? `${randomName}` : 'randomName';
+        name.textContent = userName ? `${userName}` : 'userName';
 
         // Update the timer every second
         setInterval(updateTimer, 1000);
