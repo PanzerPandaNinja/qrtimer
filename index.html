@@ -97,16 +97,17 @@
     <img src="qrtimerLogo.jpg" alt="qrtimerLogo" width="200" height="200">
     </div>
     <h1 id="displayHeading"></h1>
-    
+
     <H3 id="userName">NoJavascript, no userName</H3>
     <p id="timer">13:37</p>
 
+    <div id="table"></div>
+
+    <H3 id="totalTime">Total moving time: </H3>
     <p id="uuidOut" class="small-font">NoJavascript, no uuid</p>
 
-
-
     <script>
-        // Get the URL search parameters
+        // Get the URL search parameters like index.html?place=test&post=start
         const urlParams = new URLSearchParams(window.location.search);
         const place = urlParams.get('place');
         const post = urlParams.get('post');
@@ -117,8 +118,10 @@
         const displayHeading = document.getElementById('displayHeading');
         const title = document.getElementById('title');
         const uuidDisplay = document.getElementById('uuidOut');
+        const displayTotalTime = document.getElementById('totalTime');
         const name = document.getElementById('userName');
         var userName;
+        var totalTime = 0;
         const animals = [
             'Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear',
             'Elephant', 'Tiger', 'Zebra', 'Kangaroo', 'Monkey', 'Horse',
@@ -152,10 +155,10 @@
 
         console.log(uuid);
 
-        // Display the place in the heading     
+        // Display the place in the heading
         displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
         title.textContent = place ? `${place} QRtimer` : 'QRtimer';
-        
+
 
         try {
             const earlier_data = localStorage.getItem('qrtimer_' + place + '_' + today);
@@ -201,11 +204,22 @@
         storeLocally(postNumber, place, post, start);
         createTableFromLocalStorage(place);
 
+        const totalTimeDate = new Date(totalTime);
+        displayTotalTime.textContent = formatTime(totalTimeDate.getTime()) ? `Total moving time: ${formatTime(totalTimeDate.getTime())}` : `totalTime`;
+ 
         uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
 
-
         // ****** Functions **********
+        function formatTime(elapsedMilliseconds){
+            const hours = String(Math.floor(elapsedMilliseconds / 3600000)).padStart(2, '0');
+            const minutes = String(Math.floor((elapsedMilliseconds % 3600000) / 60000)).padStart(2, '0');
+            const seconds = String(Math.floor((elapsedMilliseconds % 60000) / 1000)).padStart(2, '0');
+            const milliseconds = String(elapsedMilliseconds % 1000).padStart(3, '0');
+
+            return  `${hours}:${minutes}:${seconds}.${milliseconds}`;
+        }
+
         function formatDateTime(dateTime) {
             const date = new Date(dateTime);
 
@@ -298,7 +312,7 @@
                 const th3 = document.createElement('th');
                 th3.textContent = 'Time';
                 headerRow.appendChild(th3);
-                
+
                 thead.appendChild(headerRow);
                 table.appendChild(thead);
                 var tablePreviousTime
@@ -308,7 +322,7 @@
                 dataArray.forEach(item => {
                     if (!item.post.includes(previousPost)) {
                         const row = document.createElement('tr');
-                        
+
                         for (const key in item) {
                             const td = document.createElement('td');
                             if (key === "post") {
@@ -331,7 +345,9 @@
                                     const date1 = new Date(item[key]);
                                     const date2 = new Date(tablePreviousTime);
                                     var diffTime = date1 - date2;
+                                    totalTime = diffTime + totalTime
                                     console.log("---difftime: " + diffTime);
+                                    console.log("---totalTime: " + totalTime);
                                     const hours = Math.floor(diffTime / 3600000);
                                     const minutes = Math.floor((diffTime % 3600000) / 60000);
                                     const seconds = Math.floor((diffTime % 60000) / 1000);
@@ -349,7 +365,7 @@
                                     var diffTime = date1 - date2;
                                     console.log("---date1: " + date1);
                                     console.log("---date2: " + date2);
-                                    console.log("---difftime: " + diffTime);
+                                    console.log("---diffTime: " + diffTime);
                                     const hours = Math.floor(diffTime / 3600000);
                                     const minutes = Math.floor((diffTime % 3600000) / 60000);
                                     const seconds = Math.floor((diffTime % 60000) / 1000);
@@ -360,7 +376,7 @@
                              }
                             row.appendChild(td);
                         }
-                        
+
                         tbody.appendChild(row);
                     }
                     else{
@@ -369,20 +385,13 @@
                             console.log("---tablePause: " + tablePause);
                         }
                     }
-
-
                 });
-
                 table.appendChild(tbody);
-
-                document.body.appendChild(table);
+                document.getElementById('table').appendChild(table);
             } catch (error) {
                 console.error('Error parsing data from localStorage:', error);
             }
         }
-        
     </script>
-    
 </body>
-
 </html>
