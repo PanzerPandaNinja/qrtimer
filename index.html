@@ -98,14 +98,14 @@
     </div>
     <h1 id="displayHeading"></h1>
 
-    <H3 id="userName">NoJavascript, no userName</H3>
+    <!-- <H3 id="userName">NoJavascript, no userName</H3> -->
     <p id="timer">13:37</p>
 
     <div id="table"></div>
 
     <H3 id="totalTime">Total moving time: </H3>
     <a href="info.html">Information</a>
-    <p id="uuidOut" class="small-font">NoJavascript, no uuid</p>
+    <!-- <p id="uuidOut" class="small-font">NoJavascript, no uuid</p> -->
 
     <script>
         // Get the URL search parameters like index.html?place=test&post=start
@@ -115,13 +115,13 @@
         const backend = urlParams.get('backend'); // address for the backend server, yet to be determined
         var start// = new Date();
         let dataArray = [];
-        var uuid;
+        //var uuid;
         const displayHeading = document.getElementById('displayHeading');
         const title = document.getElementById('title');
-        const uuidDisplay = document.getElementById('uuidOut');
+        //const uuidDisplay = document.getElementById('uuidOut');
         const displayTotalTime = document.getElementById('totalTime');
-        const name = document.getElementById('userName');
-        var userName;
+        //const name = document.getElementById('userName');
+        //var userName;
         var totalTime = 0;
         const animals = [
             'Dog', 'Cat', 'Panda', 'Lion', 'Giraffe', 'Bear',
@@ -143,18 +143,18 @@
 
 
         // Get a UUID for sending to the server in the future
-        try {
-            uuid = localStorage.getItem('qrtimer_uuid');
-        } catch (info) {
-            console.error('Error accessing localStorage:', info);
-        }
+        // try {
+        //     uuid = localStorage.getItem('qrtimer_uuid');
+        // } catch (info) {
+        //     console.error('Error accessing localStorage:', info);
+        // }
 
-        if (!uuid) {
-            uuid = crypto.randomUUID();
-            localStorage.setItem('qrtimer_uuid', uuid);
-        }
+        // if (!uuid) {
+        //     uuid = crypto.randomUUID();
+        //     localStorage.setItem('qrtimer_uuid', uuid);
+        // }
 
-        console.log(uuid);
+        // console.log(uuid);
 
         // Display the place in the heading
         displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
@@ -170,18 +170,18 @@
             console.info('No data, assuming first post', info);
         }
 
-        try {
-            userName = localStorage.getItem('qrtimer_userName');
-        } catch (info) {
-            console.error('Error accessing localStorage:', info);
-        }
+        // try {
+        //     userName = localStorage.getItem('qrtimer_userName');
+        // } catch (info) {
+        //     console.error('Error accessing localStorage:', info);
+        // }
 
-        if (!userName) {
-            userName = getRandomName().toString();
-            localStorage.setItem('qrtimer_userName', userName);
-        }
+        // if (!userName) {
+        //     userName = getRandomName().toString();
+        //     localStorage.setItem('qrtimer_userName', userName);
+        // }
 
-        name.textContent = userName ? `${userName}` : 'userName';
+        // name.textContent = userName ? `${userName}` : 'userName';
 
 
 
@@ -222,7 +222,7 @@
         const totalTimeDate = new Date(totalTime);
         displayTotalTime.textContent = formatTime(totalTimeDate.getTime()) ? `Total moving time: ${formatTime(totalTimeDate.getTime())}` : `totalTime`;
  
-        uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
+        //uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
 
         // ****** Functions **********
