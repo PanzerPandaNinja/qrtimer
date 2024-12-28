@@ -112,7 +112,7 @@
         const place = urlParams.get('place');
         const post = urlParams.get('post');
         const backend = urlParams.get('backend'); // address for the backend server, yet to be determined
-        const start = new Date();
+        var start// = new Date();
         let dataArray = [];
         var uuid;
         const displayHeading = document.getElementById('displayHeading');
@@ -182,8 +182,7 @@
 
         name.textContent = userName ? `${userName}` : 'userName';
 
-        // Update the timer every second
-        setInterval(updateTimer, 1000);
+
 
         const postNumber = dataArray.length + 1;
         console.log("postNumber: " + postNumber);
@@ -195,16 +194,26 @@
 
             if (post === latestEntry.post) {
                 if (confirmPause()) {
+                    start = new Date();
                     storeLocally(postNumber, place, post, start);
                     console.log(checkPreviousTime(latestEntry.start, now));
                     console.log("PAUSE");
                 }
+                else{
+                    start = new Date(latestEntry.start);
+                }
             } else {
+                start = new Date();
                 storeLocally(postNumber, place, post, start);
                 console.log("Running");
             }
         }
-
+        else{
+            start = new Date();
+            storeLocally(postNumber, place, post, start);
+        }
+        // Update the timer every second
+        setInterval(updateTimer, 1000);
         // Call the function to create the table
         
         createTableFromLocalStorage(place);
