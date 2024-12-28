@@ -192,16 +192,21 @@
             const latestEntry = dataArray[dataArray.length - 1];
             console.log(latestEntry);
             const now = new Date();
+
             if (post === latestEntry.post) {
-                console.log(checkPreviousTime(latestEntry.start, now));
-                console.log("PAUSE");
+                if (confirmPause()) {
+                    storeLocally(postNumber, place, post, start);
+                    console.log(checkPreviousTime(latestEntry.start, now));
+                    console.log("PAUSE");
+                }
             } else {
+                storeLocally(postNumber, place, post, start);
                 console.log("Running");
             }
         }
 
         // Call the function to create the table
-        storeLocally(postNumber, place, post, start);
+        
         createTableFromLocalStorage(place);
 
         const totalTimeDate = new Date(totalTime);
@@ -211,6 +216,12 @@
 
 
         // ****** Functions **********
+
+        function confirmPause (){
+            const userResponse = confirm("Restrart timer for this post? The elapsed time will be counted as a pause.")
+            return userResponse;
+        }
+
         function formatTime(elapsedMilliseconds){
             const hours = String(Math.floor(elapsedMilliseconds / 3600000)).padStart(2, '0');
             const minutes = String(Math.floor((elapsedMilliseconds % 3600000) / 60000)).padStart(2, '0');
