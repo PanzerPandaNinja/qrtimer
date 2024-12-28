@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">QRtimer</title>
+    <link rel="icon" href="qrtimerLogo.jpg" type="image/x-icon">
+    <style>
+            /* Light mode styles */
+            body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .small-font { font-size: 8px;  }
+        h1 {
+            color: #444;
+        }
+
+        p {
+            color: #555;
+        }
+
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e0e0e0;
+        }
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e1e1e;
+                color: #ccc;
+            }
+            .small-font { font-size: 8px;  }
+            h1 {
+                color: #ddd;
+            }
+
+            p {
+                color: #bbb;
+            }
+
+            table {
+                border: 1px solid #444;
+            }
+
+            th,
+            td {
+                border: 1px solid #555;
+            }
+
+            th {
+                background-color: #333;
+            }
+        }
+
+        .circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Feathered edges */
+        }
+
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="circle">
+    <img src="qrtimerLogo.jpg" alt="qrtimerLogo" width="200" height="200">
+    </div>
+    <h1>How to use it</h1>
+    <H3>You scan a QRcode and follow the link.<BR>
+        Then walk to the next post and scan the next qr-code.<BR>
+        Repeat until you are happy with your workout. <BR>
+        <BR>
+        Your device will remember everything, you can close the page and even the browser.<BR>
+        <BR>        
+        You can take a break after scanning a QR-code.<BR>
+        By refresing the page or scanning the QR-code again you can restart the timer.<BR> 
+        The elapsed time will be counted as a pause in your workout.<BR>
+        <BR>
+        Every day will start a fresh workout.<BR>
+        <BR>
+        This will NOT work if you change the browser during the workout.<BR>
+    </H3>
+
+    <h1>More information</h1>
+    <H3>
+    For more information go to the github-page: <BR>
+    <a href="https://github.com/PanzerPandaNinja/qrtimer">https://github.com/PanzerPandaNinja/qrtimer</a></H3>
+
+
+
+    <h1>QRtimer Data</h1> 
+    
+    All data is stored in local storage on your device and not sent anywhere.<BR>
+    You can remove all data by clicking this button:
+    <button class="button" onclick="removeQRtimerData()">Remove QRtimerQ Data </button>
+    
+    <script>
+    
+        function removeQRtimerData() { 
+            const userResponse = confirm("Are you sure you want to remove all qrtimer_ data?")
+            if (userResponse){
+                for (let i = 0; i < localStorage.length; i++) { 
+                    const key = localStorage.key(i); 
+                        if (key.startsWith('qrtimer_')) { 
+                            localStorage.removeItem(key); 
+                        } 
+                    } 
+                alert('All QRtimer data has been removed from local storage.'); 
+            }
+        }
+    </script>
+</body>
+</html>
