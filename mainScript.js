@@ -115,7 +115,7 @@ setInterval(updateTimer, 1000);
 createTableFromLocalStorage(place);
 
 const totalTimeDate = new Date(totalTime);
-displayTotalTime.textContent = formatTime(totalTimeDate.getTime()) ? `Total moving time: ${formatTime(totalTimeDate.getTime())}` : `totalTime`;
+displayTotalTime.textContent = formatTime(totalTimeDate.getTime()) ? `${formatTime(totalTimeDate.getTime())}` : `totalTime`;
 //createRoundsTable(dataArray, firstPost);
 //uuidDisplay.textContent = uuid ? `${uuid}` : `UUID`;
 
@@ -133,7 +133,7 @@ function displayRounds() {
     if (dataArray.length > 1) {
         var roundCounter = 0;
         var previousStartTime = new Date(dataArray[0].start);
-        let roundsHTML = '<ul>';
+        let roundsHTML = '';
         var previousPost = "";
         console.log('firstPost:', firstPost);
         console.log('previousStartTime:', previousStartTime);
@@ -151,7 +151,7 @@ function displayRounds() {
             const formattedTimeDifference = formatTime(timeDifference);
             console.log('**** Round: ', roundCounter);
             console.log('**** timeDifference: ', formattedTimeDifference);
-            roundsHTML += `<H3>${roundCounter}:  ${formattedTimeDifference}</H3>`;
+            roundsHTML += `<H3> ${roundCounter}:  ${formattedTimeDifference}</H3>`;
             previousStartTime = currentStartTime;
         });
     
@@ -174,7 +174,9 @@ function formatTime(elapsedMilliseconds){
     const minutes = String(Math.floor((elapsedMilliseconds % 3600000) / 60000)).padStart(2, '0');
     const seconds = String(Math.floor((elapsedMilliseconds % 60000) / 1000)).padStart(2, '0');
     const milliseconds = String(elapsedMilliseconds % 1000).padStart(3, '0');
-
+    if (hours === '00') {
+        return `${minutes}:${seconds}.${milliseconds}`;
+    }
     return  `${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 

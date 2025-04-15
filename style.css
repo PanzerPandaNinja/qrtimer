@@ -11,14 +11,23 @@
                 align-items: center;
                 height: 100vh;
                 margin: 0;
+                line-height: 0.6;
             }
             .small-font { font-size: 8px;  }
             h1 {
                 color: #444;
             }
+            h3 {
+                color: green;
+                
+            }
+            h4 {
+                color: #666;
+            }
     
             p {
-                color: #555;
+                color: orange;
+                font-weight: bold;
             }
     
             table {
@@ -48,9 +57,16 @@
                 h1 {
                     color: #ddd;
                 }
+                h3 {
+                    color: yellow;
+                    line-height: 0.6;
+                }
+                h4 {
+                    color: #666;
+                }    
     
                 p {
-                    color: #bbb;
+                    color: #66ff00;
                 }
     
                 table {
