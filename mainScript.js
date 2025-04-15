@@ -160,7 +160,7 @@ function displayRounds() {
             roundsDiv.innerHTML = roundsHTML;
         }
         else {
-            roundsDiv.textContent = 'No rounds available for the first post.';
+            roundsDiv.textContent = 'No rounds available for the first round.';
         }
     } else {
         roundsDiv.textContent = 'No rounds available for the first post.';
