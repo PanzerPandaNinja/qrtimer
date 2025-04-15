@@ -128,20 +128,30 @@ displayRounds();
 
 function displayRounds() {
     const roundsDiv = document.getElementById('rounds');
-    firstPost = localStorage.getItem('qrtimer_' + place + '_' + today + '_' + 'firstPost');
-    const filteredRounds = dataArray.filter(item => item.post === firstPost);
-    
-    
-    if (filteredRounds.length > 1) {
-        let previousStartTime = new Date(filteredRounds[0].start);
+    firstPost = localStorage.getItem('qrtimer_' + place + '_' + today + '_' + 'firstPost');    
+    console.log('dataArray:', dataArray);
+    if (dataArray.length > 1) {
+        var roundCounter = 0;
+        var previousStartTime = new Date(dataArray[0].start);
         let roundsHTML = '<ul>';
-    
-        filteredRounds.forEach((item, index) => {
+        var previousPost = "";
+        console.log('firstPost:', firstPost);
+        console.log('previousStartTime:', previousStartTime);
+        dataArray.forEach((item, index) => {
+            console.log('index:', index);
+            console.log('item.post:', item.post);
+            console.log('previousPost:', previousPost);
+            if (index === 0) return; // Skip the first round as it doesn't have a previous round to compare with
+            if (item.post === previousPost) return; // Skip if the post is the same as the previous one, when paused
+            previousPost = item.post;
+            if (item.post !== firstPost) return; // Skip if the post is not same as first post
+            roundCounter++;
             const currentStartTime = new Date(item.start);
             const timeDifference = currentStartTime - previousStartTime;
             const formattedTimeDifference = formatTime(timeDifference);
-    
-            roundsHTML += `<li>Round ${index + 1}: + ${formattedTimeDifference}</li>`;
+            console.log('**** Round: ', roundCounter);
+            console.log('**** timeDifference: ', formattedTimeDifference);
+            roundsHTML += `<H3>${roundCounter}:  ${formattedTimeDifference}</H3>`;
             previousStartTime = currentStartTime;
         });
     
