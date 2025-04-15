@@ -155,8 +155,13 @@ function displayRounds() {
             previousStartTime = currentStartTime;
         });
     
-        roundsHTML += '</ul>';
-        roundsDiv.innerHTML = roundsHTML;
+        roundsHTML += '';
+        if (roundsHTML) {
+            roundsDiv.innerHTML = roundsHTML;
+        }
+        else {
+            roundsDiv.textContent = 'No rounds available for the first post.';
+        }
     } else {
         roundsDiv.textContent = 'No rounds available for the first post.';
     }
