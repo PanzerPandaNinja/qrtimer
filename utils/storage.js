@@ -1,6 +1,5 @@
 export function storeLocally(dataArray, postNumber, place, post, start, today) {
     dataArray = Array.isArray(dataArray) ? dataArray : [];
-    console.log('From storeLocally: qrtimer_' + place + '_' + today + ' ' + postNumber, dataArray);
     let data = {
         postNumber,
         post,

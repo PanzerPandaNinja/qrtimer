@@ -22,7 +22,11 @@ export function displayRounds(dataArray, today, firstPost, place) {
             roundCounter++;
             const currentStartTime = new Date(item.start);
             const timeDifference = currentStartTime - previousStartTime;
-            const formattedTimeDifference = formatTime(timeDifference);
+            const { hours, minutes, seconds, milliseconds } = formatTime(timeDifference);
+            const formattedTimeDifference = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+            
+            //const formattedTimeDifference = formatTime(timeDifference);
+            
             console.log('**** Round: ', roundCounter);
             console.log('**** timeDifference: ', formattedTimeDifference);
             roundsHTML += `<H3> ${roundCounter}:  ${formattedTimeDifference}</H3>`;

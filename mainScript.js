@@ -71,8 +71,6 @@ try {
         console.error('Error accessing localStorage:', info);
 }
 
-console.log('******** postNumber and dataArray:', postNumber, dataArray);
-console.log('********** dataArray.length:', dataArray.length);
 
 // Update the timer every second
 setInterval(() => updateTimer(start, post), 1000);
@@ -86,5 +84,6 @@ console.log('!!!!!!!!!!!timeTable:', timeTable);
 console.log('!!!!!!!!!!!totalTime:', totalTime2);
 renderTimeTable(timeTable);
 const totalTimeDate = new Date(totalTime2);
-displayTotalTime.textContent = formatTime(totalTimeDate.getTime()) ? `${formatTime(totalTimeDate.getTime())}` : `totalTime`;
+
+displayTotalTime.textContent = `${totalTimeDate.getHours()}:${totalTimeDate.getMinutes()}:${totalTimeDate.getSeconds()}.${totalTimeDate.getMilliseconds()}`;
 //createRoundsTable(dataArray, firstPost);

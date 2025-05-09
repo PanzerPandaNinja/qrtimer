@@ -27,9 +27,9 @@ export function updateTimer(start, post) {
 
 export function processTime(dataArray, place, today, firstPost, totalTime) {
     var time;
-    dataArray = dataArray;
-    totalTime = totalTime;
-    firstPost = firstPost;
+    //dataArray = dataArray;
+    //totalTime = totalTime;
+    //firstPost = firstPost;
     const dataString = localStorage.getItem('qrtimer_' + place + '_' + today);
     if (!dataString) {
         console.info('No data found in localStorage.');
@@ -45,7 +45,7 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
         // Create table body rows
         dataArray.forEach(item => {
             if (!item.post.includes(previousPost)) {
-                const row = {};
+                let row = {};
                 for (const key in item) {
                     
                     if (key === "post") {
@@ -59,32 +59,35 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
                             row[key]=  hours + ':' + minutes + ':' +  seconds + ':' + milliseconds;
                         }
                         else{
-                            const date1 = new Date(item[key]);
-                            const date2 = new Date(tablePreviousTime);
-                            var diffTime = date1 - date2;
+                            const currentStartTime = new Date(item[key]);
+                            const previousStartTime = new Date(tablePreviousTime);
+                            let diffTime = currentStartTime - previousStartTime;
+                            console.log("diffTime: " + diffTime);
                             totalTime = diffTime + totalTime;
-                            // const hours = Math.floor(diffTime / 3600000);
-                            // const minutes = Math.floor((diffTime % 3600000) / 60000);
-                            // const seconds = Math.floor((diffTime % 60000) / 1000);
-                            // const milliseconds = diffTime % 1000;
-                            const { hours, minutes, seconds, milliseconds } = formatDateTime(diffTime);
-                            if (hours === '0') {
+                            const { hours, minutes, seconds, milliseconds } = formatTime(diffTime);
+                            if (hours === '00') {
                                 row[key] ='+ '  + minutes + ':' +  seconds + ':' + milliseconds ;
                             }
-                            row[key] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
+                            else{
+                                row[key] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
+                            }
+                            //row[key] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;   
                         }
                         tablePreviousTime = item.start;
                     }
                         if (key === "postNumber") {
                             if (tablePause){
-                            const date1 = new Date(tablePause);
-                            const date2 = new Date(tablePreviousTime);
-                            var diffTime = date1 - date2;
-                            const hours = Math.floor(diffTime / 3600000);
-                            const minutes = Math.floor((diffTime % 3600000) / 60000);
-                            const seconds = Math.floor((diffTime % 60000) / 1000);
-                            const milliseconds = diffTime % 1000;
-                            row['pause'] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
+                            const currentStartTime = new Date(tablePause);
+                            const previousStartTime = new Date(tablePreviousTime);
+                            var diffTime = currentStartTime - previousStartTime;
+                            console.log("diffTime: " + diffTime);
+                            const { hours, minutes, seconds, milliseconds } = formatTime(diffTime);
+                            if (hours === '00') {
+                                row['pause'] ='+ '  + minutes + ':' +  seconds + ':' + milliseconds ;
+                            }
+                            else{
+                                row['pause'] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
+                            }
                             tablePause = null;
                             }
                         }
