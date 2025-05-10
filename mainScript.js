@@ -4,6 +4,7 @@ import { updateElementText, createTable } from './utils/dom.js';
 import { storeLocally, getPreviousData } from './utils/storage.js';
 import { displayRounds, renderTimeTable } from './utils/display.js';
 import { confirmPause } from './utils/interact.js';
+import { translations } from './utils/localization.js';
 // import { getRandomName, setName, uuid } from './utils/name.js'; // for future use
 
 
@@ -30,6 +31,37 @@ var firstPost; //used to indicate first post and count rounds
 displayHeading.textContent = place ? `${place} QRtimer` : 'QRtimer';
 title.textContent = place ? `${place} QRtimer` : 'QRtimer';
 
+function setLanguage(lang) {
+    const elements = {
+        title: document.getElementById('title'),
+        displayHeading: document.getElementById('displayHeading'),
+        currentSegment: document.querySelector('h2:nth-of-type(1)'),
+        rounds: document.querySelector('h2:nth-of-type(2)'),
+        totalMovingTime: document.querySelector('h2:nth-of-type(3)'),
+        information: document.querySelector('a[href="info.html"]'),
+    };
+
+    // Update text content based on the selected language
+    elements.title.textContent = translations[lang].title;
+    elements.displayHeading.textContent = translations[lang].title;
+    elements.currentSegment.textContent = translations[lang].currentSegment;
+    elements.rounds.textContent = translations[lang].rounds;
+    elements.totalMovingTime.textContent = translations[lang].totalMovingTime;
+    elements.information.textContent = translations[lang].information;
+
+    // Optionally save the selected language to localStorage
+    localStorage.setItem('qrtimer_language', lang);
+}
+
+// Attach setLanguage to the global window object
+window.setLanguage = setLanguage;
+
+// Set the default language on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const browserLanguage = navigator.language || navigator.userLanguage;
+    const savedLanguage = localStorage.getItem('qrtimer_language') || (browserLanguage.startsWith('nb' || 'nn') ? 'no' : 'en');
+    setLanguage(savedLanguage);
+});
 
 try {
     dataArray = getPreviousData(place, today); // Get the previous data from localStorage
