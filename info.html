@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -94,41 +93,31 @@
 
 <body>
     <div class="circle">
-    <img src="qrtimerLogo.jpg" alt="qrtimerLogo" width="200" height="200">
+        <img src="qrtimerLogo.jpg" alt="qrtimerLogo" width="200" height="200">
     </div>
-    <h1>How to use it</h1>
-    <H3>You scan a QRcode and follow the link.<BR>
-        Then walk to the next post and scan the next qr-code.<BR>
-        Repeat until you are happy with your workout. <BR>
-        <BR>
-        Your device will remember everything, you can close the page and even the browser.<BR>
-        <BR>        
-        You can take a break after scanning a QR-code.<BR>
-        By refresing the page or scanning the QR-code again you can restart the timer.<BR> 
-        The elapsed time will be counted as a pause in your workout.<BR>
-        <BR>
-        Every day will start a fresh workout.<BR>
-        <BR>
-        This will NOT work if you change the browser during the workout.<BR>
-    </H3>
+    <br>
+    <div id="languageSelector">
+        <button onclick="setLanguage('en')">English</button>
+        <button onclick="setLanguage('no')">Norsk</button>
+    </div>
+    <h1></h1>
+    <h3></h3>
 
-    <h1>More information</h1>
-    <H3>
-    For more information go to the github-page: <BR>
-    <a href="https://github.com/PanzerPandaNinja/qrtimer">https://github.com/PanzerPandaNinja/qrtimer</a></H3>
+    <h1></h1>
+    <h3></h3>
 
+    <h1></h1>
+    <h3></h3>
+    <button class="button" onclick="removeQRtimerData()"></button>
 
-
-    <h1>QRtimer Data</h1> 
-    
-    All data is stored in local storage on your device and not sent anywhere.<BR>
-    You can remove all data by clicking this button:
-    <button class="button" onclick="removeQRtimerData()">Remove QRtimerQ Data </button>
-    
     <script>
     
         function removeQRtimerData() { 
-            const userResponse = confirm("Are you sure you want to remove all qrtimer_ data?")
+            const lang = localStorage.getItem('qrtimer_language') || (navigator.language.startsWith('nb' || 'nn') ? 'no' : 'en');
+            const promtUser = lang === 'no' 
+                ? 'Er du sikker på at du vil fjerne all qrtimer_ data?' 
+                : 'Are you sure you want to remove all qrtimer_ data?';
+            const userResponse = confirm(promtUser)
             if (userResponse){
                 for (let i = 0; i < localStorage.length; i++) { 
                     const key = localStorage.key(i); 
@@ -136,9 +125,74 @@
                             localStorage.removeItem(key); 
                         } 
                     } 
-                alert('All QRtimer data has been removed from local storage.'); 
+                const lang = localStorage.getItem('qrtimer_language') || (navigator.language.startsWith('nb' || 'nn') ? 'no' : 'en');
+                const alertMessage = lang === 'no' 
+                    ? 'All QRtimer-data er fjernet fra lokal lagring.' 
+                    : 'All QRtimer data has been removed from local storage.';
+                alert(alertMessage);
+                
+                //alert('All QRtimer data has been removed from local storage.'); 
             }
         }
+
+        const translations = {
+    en: {
+        howToUse: "How to use it",
+        howToUseDetails: `You scan a QR code and follow the link.<br>
+            Then walk to the next post and scan the next QR code.<br>
+            Repeat until you are happy with your workout.<br><br>
+            Your device will remember everything, you can close the page and even the browser.<br><br>
+            You can take a break after scanning a QR code.<br>
+            By refreshing the page or scanning the QR code again you can restart the timer.<br>
+            The elapsed time will be counted as a pause in your workout.<br><br>
+            Every day will start a fresh workout.<br><br>
+            This will NOT work if you change the browser during the workout.`,
+        moreInfo: "More information",
+        githubLink: "For more information go to the GitHub page:",
+        qrtimerData: "QRtimer Data",
+        dataDetails: `All data is stored in local storage on your device and not sent anywhere.<br>
+            You can remove all data by clicking this button:`,
+        removeDataButton: "Remove QRtimer Data",
+    },
+    no: {
+        howToUse: "Hvordan bruke det",
+        howToUseDetails: `Du skanner en QR-kode og følger lenken.<br>
+            Gå deretter til neste post og skann neste QR-kode.<br>
+            Gjenta til du er fornøyd med treningen din.<br><br>
+            Enheten din vil huske alt, du kan lukke siden og til og med nettleseren.<br><br>
+            Du kan ta en pause etter å ha skannet en QR-kode.<br>
+            Ved å oppdatere siden eller skanne QR-koden igjen kan du starte timeren på nytt.<br>
+            Den forløpte tiden vil bli regnet som en pause i treningen din.<br><br>
+            Hver dag starter en ny treningsøkt.<br><br>
+            Dette vil IKKE fungere hvis du bytter nettleser under treningen.`,
+        moreInfo: "Mer informasjon",
+        githubLink: "For mer informasjon, gå til GitHub-siden:",
+        qrtimerData: "QRtimer Data",
+        dataDetails: `All data lagres i lokal lagring på enheten din og sendes ikke noe sted.<br>
+            Du kan fjerne all data ved å klikke på denne knappen:`,
+        removeDataButton: "Fjern QRtimer Data",
+    },
+};
+function setLanguage(lang) {
+    document.querySelector('h1:nth-of-type(1)').textContent = translations[lang].howToUse;
+    document.querySelector('h3:nth-of-type(1)').innerHTML = translations[lang].howToUseDetails;
+    document.querySelector('h1:nth-of-type(2)').textContent = translations[lang].moreInfo;
+    document.querySelector('h3:nth-of-type(2)').innerHTML = `${translations[lang].githubLink} <br>
+        <a href="https://github.com/PanzerPandaNinja/qrtimer">https://github.com/PanzerPandaNinja/qrtimer</a>`;
+    document.querySelector('h1:nth-of-type(3)').textContent = translations[lang].qrtimerData;
+    document.querySelector('h3:nth-of-type(3)').innerHTML = translations[lang].dataDetails;
+    document.querySelector('.button').textContent = translations[lang].removeDataButton;
+
+    // Save the selected language to localStorage
+    localStorage.setItem('qrtimer_language', lang);
+}
+
+// Set the default language on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const browserLanguage = navigator.language || navigator.userLanguage;
+    const savedLanguage = localStorage.getItem('qrtimer_language') || (browserLanguage.startsWith('nb' || 'nn') ? 'no' : 'en');
+    setLanguage(savedLanguage);
+});
     </script>
 </body>
 </html>
