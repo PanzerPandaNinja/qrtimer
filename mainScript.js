@@ -1,6 +1,5 @@
 import { checkPreviousTime, updateTimer, processTime } from './utils/timer.js'; 
 import { formatTime, formatDateTime } from './utils/format.js';
-import { updateElementText, createTable } from './utils/dom.js';
 import { storeLocally, getPreviousData } from './utils/storage.js';
 import { displayRounds, renderTimeTable } from './utils/display.js';
 import { confirmPause } from './utils/interact.js';

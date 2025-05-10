@@ -17,17 +17,11 @@ export function updateTimer(start, post) {
     start = new Date(start);
     const elapsedMilliseconds = now.getTime() - start.getTime();
 
-    const hours = String(Math.floor(elapsedMilliseconds / 3600000)).padStart(2, '0');
-    const minutes = String(Math.floor((elapsedMilliseconds % 3600000) / 60000)).padStart(2, '0');
-    const seconds = String(Math.floor((elapsedMilliseconds % 60000) / 1000)).padStart(2, '0');
-    const milliseconds = String(elapsedMilliseconds % 1000).padStart(3, '0');
-
+    const { hours, minutes, seconds, milliseconds } = formatTime(elapsedMilliseconds);
     document.getElementById('timer').textContent = `${post}: ${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 
 export function processTime(dataArray, place, today, firstPost, totalTime) {
-    var time;
-
     const dataString = localStorage.getItem('qrtimer_' + place + '_' + today);
     if (!dataString) {
         console.info('No data found in localStorage.');

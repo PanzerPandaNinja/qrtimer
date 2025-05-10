@@ -4,7 +4,6 @@ export function formatTime(elapsedMilliseconds) {
     const seconds = String(Math.floor((elapsedMilliseconds % 60000) / 1000)).padStart(2, '0');
     const milliseconds = String(elapsedMilliseconds % 1000).padStart(3, '0');
     return { hours, minutes, seconds, milliseconds }
-    //return `${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 
 export function formatDateTime(dateTime) {
