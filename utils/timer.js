@@ -63,10 +63,10 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
                             totalTime = diffTime + totalTime;
                             const { hours, minutes, seconds, milliseconds } = formatTime(diffTime);
                             if (hours === '00') {
-                                row[key] ='+ '  + minutes + ':' +  seconds + ':' + milliseconds ;
+                                row[key] ='+'  + minutes + ':' +  seconds + ':' + milliseconds ;
                             }
                             else{
-                                row[key] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
+                                row[key] = '+' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
                             }
 
                         }
@@ -79,10 +79,10 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
                             var diffTime = currentStartTime - previousStartTime;
                             const { hours, minutes, seconds, milliseconds } = formatTime(diffTime);
                             if (hours === '00') {
-                                row['pause'] ='+ '  + minutes + ':' +  seconds + ':' + milliseconds ;
+                                row['pause'] ='+'  + minutes + ':' +  seconds + ':' + milliseconds ;
                             }
                             else{
-                                row['pause'] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
+                                row['pause'] = '+' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
                             }
                             tablePause = null;
                             }
