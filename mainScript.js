@@ -84,6 +84,11 @@ console.log('!!!!!!!!!!!timeTable:', timeTable);
 console.log('!!!!!!!!!!!totalTime:', totalTime2);
 renderTimeTable(timeTable);
 const totalTimeDate = new Date(totalTime2);
-
-displayTotalTime.textContent = `${totalTimeDate.getHours()}:${totalTimeDate.getMinutes()}:${totalTimeDate.getSeconds()}.${totalTimeDate.getMilliseconds()}`;
+const { hours, minutes, seconds, milliseconds } = formatTime(totalTime2);
+if (hours === '00') {
+    displayTotalTime.textContent = `${minutes}:${seconds}.${milliseconds}`; // Display only minutes and seconds if hours are 0
+}else {
+    displayTotalTime.textContent = `${hours}:${minutes}:${seconds}.${milliseconds}`; // Display hours, minutes, and seconds
+}
+//displayTotalTime.textContent = `${totalTimeDate.getHours()}:${totalTimeDate.getMinutes()}:${totalTimeDate.getSeconds()}.${totalTimeDate.getMilliseconds()}`;
 //createRoundsTable(dataArray, firstPost);
