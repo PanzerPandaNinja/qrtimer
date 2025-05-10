@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QRtimer admin</title>
+    <link rel="icon" href="qrtimerLogo.jpg" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            background-color: #f0f0f0;
+        }
+        #qrcode {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        #frame {
+            h1{
+                font-size: 40px;
+            }
+            p{
+                font-size: 30px;
+            }
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            img {
+                width: 360px;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div>
+        <h1>QRtimer Code Generator</h1>
+        <p>Enter the place and post to generate a QR code. This page can also be opened with place and post in the query part of the URL.</p>
+        <label for="place">Place:</label>
+        <input type="text" id="place" placeholder="Enter place" >
+
+        <label for="post">Post:</label>
+        <input type="text" id="post" placeholder="Enter post" >
+
+        <button onclick="generateQRCode()">Generate QR Code</button>
+        <button onclick="printQRCode()">Print QR Code</button>
+    </div>
+
+    <div id="frame">
+        <div id="label"></div>
+        <div id="qrcode"></div>
+    </div>
+
+    <!-- Hidden iframe for printing -->
+    <iframe id="printFrame" style="display: none;"></iframe>
+
+</body>
+<script>
+    // Function to get URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const place = urlParams.get('place');
+    const post = urlParams.get('post');
+    const backend = urlParams.get('backend'); // address for the backend server, yet to be determined
+
+    document.addEventListener("DOMContentLoaded", () => {
+        if (place) {
+            document.getElementById("place").value = decodeURIComponent(place);
+        }
+        if (post) {
+            document.getElementById("post").value = decodeURIComponent(post);
+        }
+
+        // Automatically generate the QR code if both place and post are present
+        if (place && post) {
+            generateQRCode();
+        }
+    });
+    // Function to generate the QR code
+    function generateQRCode() {
+        const place = encodeURIComponent(document.getElementById("place").value);
+        const post = encodeURIComponent(document.getElementById("post").value);
+        const url = `https://qrtimer.app/?place=${place}&post=${post}`;
+        
+        // Update the label
+        const label = document.getElementById("label");
+        label.innerHTML = `<strong>${decodeURIComponent(place)} QRtimer</strong><br>${decodeURIComponent(post)}`;
+
+        // Generate the QR code
+        const qrCodeContainer = document.getElementById("qrcode");
+        qrCodeContainer.innerHTML = ""; // Clear previous QR code
+        new QRCode(qrCodeContainer, {
+            text: url,
+            width: 1024,
+            height: 1024,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
+
+    // Function to print the QR code
+    function printQRCode() {
+        const qrCodeHTML = document.getElementById("frame").innerHTML;
+
+        // Get the hidden iframe
+        const printFrame = document.getElementById("printFrame");
+        const printDocument = printFrame.contentDocument || printFrame.contentWindow.document;
+
+        // Write the content to the iframe
+        printDocument.open();
+        printDocument.write(`
+            <html>
+            <head>
+                <title>Print QR Code</title>
+                <style>
+                body {
+                    font-size: 60px;
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    margin: 0;
+                    padding: 0;
+                }
+                #qrcode {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0);
+                    display: inline-block;
+                }
+                @media print {
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100vh;
+                    }
+                    #qrcode {
+                        width: auto;
+                        height: auto;
+                        max-width: 100%;
+                        max-height: 100%;
+                        page-break-inside: avoid;
+                    }
+                }
+                </style>
+            </head>
+            <body>
+                ${qrCodeHTML}
+            </body>
+            </html>
+        `);
+        printDocument.close();
+
+        // Trigger the print
+        printFrame.contentWindow.focus();
+        printFrame.contentWindow.print();
+    }
+</script>
+</html>

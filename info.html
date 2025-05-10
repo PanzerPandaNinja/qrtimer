@@ -7,42 +7,36 @@
     <link rel="icon" href="qrtimerLogo.jpg" type="image/x-icon">
     <style>
             /* Light mode styles */
-            body {
+        body {
+            font-stretch: normal;
             font-family: Arial, sans-serif;
             text-align: center;
+            font-size: 16px; /* Default font size */
             background-color: #f0f0f0;
             color: #333;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .small-font { font-size: 8px;  }
-        h1 {
-            color: #444;
+            min-height: 100vh; /* Allow content to expand */
+            margin: 20px;
+            overflow: auto; /* Allow scrolling */
+            max-width: 600px; /* Prevent horizontal scrolling */ 
         }
 
-        p {
-            color: #555;
+        .circle {
+            width: 120px; /* Adjust size */
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: static;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Feathered edges */
         }
 
-        table {
-            margin: 20px auto;
-            border-collapse: collapse;
-            width: 80%;
-        }
-
-        th,
-        td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #e0e0e0;
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* Dark mode styles */
@@ -59,34 +53,6 @@
             p {
                 color: #bbb;
             }
-
-            table {
-                border: 1px solid #444;
-            }
-
-            th,
-            td {
-                border: 1px solid #555;
-            }
-
-            th {
-                background-color: #333;
-            }
-        }
-
-        .circle {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Feathered edges */
-        }
-
-        .circle img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
         }
     </style>
 </head>
@@ -100,15 +66,21 @@
         <button onclick="setLanguage('en')">English</button>
         <button onclick="setLanguage('no')">Norsk</button>
     </div>
-    <h1></h1>
-    <h3></h3>
+    <h1 id="howToUse"></h1>
+    <h3><span id="howToUseDetails"></span></h3>
 
-    <h1></h1>
-    <h3></h3>
+    <h1 id="moreInfo"></h1>
+    <h3><span id="githubLink"></span></h3>
 
-    <h1></h1>
-    <h3></h3>
-    <button class="button" onclick="removeQRtimerData()"></button>
+    <h1 id="qrtimerData"></h1>
+    <h3><span id="dataDetails"></span></h3>
+    <button id="removeDataButton" class="button" onclick="removeQRtimerData()"></button>
+
+    <h1 id="adminPageTitle"></h1>
+    <h3>
+        <span id="adminDescription"></span><br><br>
+        <a id="adminLink" href="admin.html"></a>
+    </h3>
 
     <script>
     
@@ -153,6 +125,10 @@
         dataDetails: `All data is stored in local storage on your device and not sent anywhere.<br>
             You can remove all data by clicking this button:`,
         removeDataButton: "Remove QRtimer Data",
+        adminPageTitle: "Admin Page",
+        adminPageDescription: `The admin page allows you to generate QR codes for specific places and posts. You can also add place and post to the URL to display the QR code immediately.<br>
+            You can also print the generated QR codes directly from the page.`,
+        adminPageLink: "Go to the Admin Page",
     },
     no: {
         howToUse: "Hvordan bruke det",
@@ -171,17 +147,26 @@
         dataDetails: `All data lagres i lokal lagring på enheten din og sendes ikke noe sted.<br>
             Du kan fjerne all data ved å klikke på denne knappen:`,
         removeDataButton: "Fjern QRtimer Data",
+        adminPageTitle: "Adminside",
+        adminPageDescription: `Adminsiden lar deg generere QR-koder for spesifikke steder og poster. Du kan også legge til place og post i URL'en for å få opp QR-koden med en gang.<br>
+            Du kan også skrive ut de genererte QR-kodene direkte fra siden.`,
+        adminPageLink: "Gå til Adminsiden",
     },
 };
 function setLanguage(lang) {
-    document.querySelector('h1:nth-of-type(1)').textContent = translations[lang].howToUse;
-    document.querySelector('h3:nth-of-type(1)').innerHTML = translations[lang].howToUseDetails;
-    document.querySelector('h1:nth-of-type(2)').textContent = translations[lang].moreInfo;
-    document.querySelector('h3:nth-of-type(2)').innerHTML = `${translations[lang].githubLink} <br>
-        <a href="https://github.com/PanzerPandaNinja/qrtimer">https://github.com/PanzerPandaNinja/qrtimer</a>`;
-    document.querySelector('h1:nth-of-type(3)').textContent = translations[lang].qrtimerData;
-    document.querySelector('h3:nth-of-type(3)').innerHTML = translations[lang].dataDetails;
-    document.querySelector('.button').textContent = translations[lang].removeDataButton;
+    document.getElementById('howToUse').innerHTML = translations[lang].howToUse;
+    document.getElementById('howToUseDetails').innerHTML = translations[lang].howToUseDetails;
+    document.getElementById('moreInfo').innerHTML = translations[lang].moreInfo;
+    document.getElementById('githubLink').innerHTML = `${translations[lang].githubLink} <br>
+        <a href="https://github.com/PanzerPandaNinja/qrtimer">PanzerPandaNinja/qrtimer</a>`;
+    document.getElementById('qrtimerData').innerHTML = translations[lang].qrtimerData;
+    document.getElementById('dataDetails').innerHTML = translations[lang].dataDetails;
+    document.getElementById('removeDataButton').textContent = translations[lang].removeDataButton;
+
+    // Admin page section
+    document.getElementById('adminPageTitle').innerHTML = translations[lang].adminPageTitle;
+    document.getElementById('adminDescription').innerHTML = translations[lang].adminPageDescription;
+    document.getElementById('adminLink').textContent = translations[lang].adminPageLink;
 
     // Save the selected language to localStorage
     localStorage.setItem('qrtimer_language', lang);
