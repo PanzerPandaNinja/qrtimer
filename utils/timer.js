@@ -27,9 +27,7 @@ export function updateTimer(start, post) {
 
 export function processTime(dataArray, place, today, firstPost, totalTime) {
     var time;
-    //dataArray = dataArray;
-    //totalTime = totalTime;
-    //firstPost = firstPost;
+
     const dataString = localStorage.getItem('qrtimer_' + place + '_' + today);
     if (!dataString) {
         console.info('No data found in localStorage.');
@@ -62,7 +60,6 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
                             const currentStartTime = new Date(item[key]);
                             const previousStartTime = new Date(tablePreviousTime);
                             let diffTime = currentStartTime - previousStartTime;
-                            console.log("diffTime: " + diffTime);
                             totalTime = diffTime + totalTime;
                             const { hours, minutes, seconds, milliseconds } = formatTime(diffTime);
                             if (hours === '00') {
@@ -71,7 +68,7 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
                             else{
                                 row[key] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;
                             }
-                            //row[key] = '+ ' + hours + ':' + minutes + ':' +  seconds + ':' + milliseconds ;   
+
                         }
                         tablePreviousTime = item.start;
                     }
@@ -80,7 +77,6 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
                             const currentStartTime = new Date(tablePause);
                             const previousStartTime = new Date(tablePreviousTime);
                             var diffTime = currentStartTime - previousStartTime;
-                            console.log("diffTime: " + diffTime);
                             const { hours, minutes, seconds, milliseconds } = formatTime(diffTime);
                             if (hours === '00') {
                                 row['pause'] ='+ '  + minutes + ':' +  seconds + ':' + milliseconds ;
@@ -99,12 +95,9 @@ export function processTime(dataArray, place, today, firstPost, totalTime) {
             else{
                 if (!tablePause){
                     tablePause = item.start;
-                    console.log("&&&&&&&&&&&&&tablePause: " + tablePause);
                 }
             }
         });
-        
-        console.log("&&&&&&&&&&&&& timeTable: ", timeTable);
         const totalTime2 = totalTime;
         return { totalTime2, timeTable };
         

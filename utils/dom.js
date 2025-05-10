@@ -33,4 +33,3 @@ export function createTable(dataArray) {
     return table;
 }
 
-//module.exports = { updateElementText, createTable };

@@ -37,9 +37,7 @@ try {
         console.info('No data, assuming first post');
         postNumber ++;
         start = new Date();
-        console.log('********** Start:', start);
         firstPost = post;
-        console.log('postNumber:', postNumber, dataArray);
         storeLocally(dataArray, postNumber, place, post, start, today)
         localStorage.setItem('qrtimer_' + place + '_' + today + '_' + 'firstPost', firstPost); // Store the data in localStorage
         dataArray = getPreviousData(place, today); // Get the data again after storing
@@ -47,19 +45,17 @@ try {
     else { //only if there is more than one entry in the dataArray  
         const latestEntry = dataArray[dataArray.length - 1];
         postNumber = latestEntry.postNumber + 1; // Get the last post number from the data array and increment it
-        console.log('Latest entry in dataArray: ' + latestEntry);
         const now = new Date();
     
         if (post === latestEntry.post) {
             if (confirmPause()) {
                 start = new Date();
                 storeLocally(dataArray, postNumber, place, post, start, today);
-                console.log(checkPreviousTime(latestEntry.start, now));
                 console.log("PAUSE");
-                
             }
             else{
                 start = new Date(latestEntry.start);
+                console.log("RESUME");
             }
         } else {
             start = new Date();
@@ -71,24 +67,19 @@ try {
         console.error('Error accessing localStorage:', info);
 }
 
+// Update the timer every millisecond, I wonder what  the performance impact of this is, it looks much better than updating each second
+setInterval(() => updateTimer(start, post), 1);
 
-// Update the timer every second
-setInterval(() => updateTimer(start, post), 1000);
-// Call the function to create the table
-
-//displayTableFromLocalStorage(dataArray, place, today, firstPost, totalTime);
 displayRounds(dataArray, today, firstPost, place, totalTime);
 
 const { totalTime2, timeTable } = processTime(dataArray, place, today, firstPost, totalTime);
-console.log('!!!!!!!!!!!timeTable:', timeTable);
-console.log('!!!!!!!!!!!totalTime:', totalTime2);
+console.log('TimeTable:', timeTable);
+console.log('TotalTime:', totalTime2);
 renderTimeTable(timeTable);
-const totalTimeDate = new Date(totalTime2);
+//const totalTimeDate = new Date(totalTime2);
 const { hours, minutes, seconds, milliseconds } = formatTime(totalTime2);
 if (hours === '00') {
     displayTotalTime.textContent = `${minutes}:${seconds}.${milliseconds}`; // Display only minutes and seconds if hours are 0
 }else {
     displayTotalTime.textContent = `${hours}:${minutes}:${seconds}.${milliseconds}`; // Display hours, minutes, and seconds
 }
-//displayTotalTime.textContent = `${totalTimeDate.getHours()}:${totalTimeDate.getMinutes()}:${totalTimeDate.getSeconds()}.${totalTimeDate.getMilliseconds()}`;
-//createRoundsTable(dataArray, firstPost);

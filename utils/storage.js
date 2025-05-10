@@ -8,7 +8,6 @@ export function storeLocally(dataArray, postNumber, place, post, start, today) {
     dataArray.push(data);
 
     const dataString = JSON.stringify(dataArray); // Convert the data object to a JSON string
-    console.log('From storeLocally: qrtimer_' + place + '_' + today, dataString);
     localStorage.setItem('qrtimer_' + place + '_' + today, dataString); // Store the data in localStorage
     
 }
