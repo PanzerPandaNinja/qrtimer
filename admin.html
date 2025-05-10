@@ -94,32 +94,56 @@
             generateQRCode();
         }
     });
-    // Function to generate the QR code
+    // Function to generate QR codes for multiple posts
     function generateQRCode() {
         const place = encodeURIComponent(document.getElementById("place").value);
-        const post = encodeURIComponent(document.getElementById("post").value);
-        const url = `https://qrtimer.app/?place=${place}&post=${post}`;
-        
-        // Update the label
-        const label = document.getElementById("label");
-        label.innerHTML = `<strong>${decodeURIComponent(place)} QRtimer</strong><br>${decodeURIComponent(post)}`;
-
-        // Generate the QR code
+        const posts = document.getElementById("post").value.split(',').map(post => post.trim()); // Split and trim posts
         const qrCodeContainer = document.getElementById("qrcode");
-        qrCodeContainer.innerHTML = ""; // Clear previous QR code
-        new QRCode(qrCodeContainer, {
-            text: url,
-            width: 1024,
-            height: 1024,
-            colorDark: "#000000",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
+        const labelContainer = document.getElementById("label");
+
+        // Clear previous QR codes
+        qrCodeContainer.innerHTML = "";
+        labelContainer.innerHTML = "";
+
+        // Generate QR codes for each post
+        posts.forEach(post => {
+            const url = `https://qrtimer.app/?place=${place}&post=${encodeURIComponent(post)}`;
+
+            // Create a container for each QR code and label
+            const qrCodeWrapper = document.createElement("div");
+            qrCodeWrapper.style.pageBreakAfter = "always"; // Ensure each QR code is on a separate page when printing
+            qrCodeWrapper.style.marginBottom = "20px";
+            qrCodeWrapper.style.textAlign = "center";
+
+            const label = document.createElement("div");
+            label.innerHTML = `<strong>${decodeURIComponent(place)} QRtimer</strong><br>${decodeURIComponent(post)}`;
+            label.style.marginBottom = "10px";
+
+            const qrCodeDiv = document.createElement("div");
+            qrCodeDiv.style.display = "inline-block";
+
+            // Generate the QR code
+            new QRCode(qrCodeDiv, {
+                text: url,
+                width: 800,
+                height: 800,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Append label and QR code to the wrapper
+            qrCodeWrapper.appendChild(label);
+            qrCodeWrapper.appendChild(qrCodeDiv);
+
+            // Append the wrapper to the QR code container
+            qrCodeContainer.appendChild(qrCodeWrapper);
         });
     }
 
-    // Function to print the QR code
+    // Function to print QR codes
     function printQRCode() {
-        const qrCodeHTML = document.getElementById("frame").innerHTML;
+        const qrCodeHTML = document.getElementById("qrcode").innerHTML;
 
         // Get the hidden iframe
         const printFrame = document.getElementById("printFrame");
@@ -130,44 +154,40 @@
         printDocument.write(`
             <html>
             <head>
-                <title>Print QR Code</title>
+                <title>Print QR Codes</title>
                 <style>
-                body {
-                    font-size: 60px;
-                    font-family: Arial, sans-serif;
-                    text-align: center;
-                    margin: 0;
-                    padding: 0;
-                }
-                #qrcode {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0);
-                    display: inline-block;
-                }
-                @media print {
                     body {
+                        font-size: 42px; /* Adjust font size for printing */
+                        font-family: Arial, sans-serif;
                         margin: 0;
                         padding: 0;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         justify-content: center;
-                        height: 100vh;
                     }
-                    #qrcode {
+                    #qrcode > div {
+                        page-break-after: always; /* Ensure each QR code is on a separate page */
+                    }
+                    #qrcode img {
+                        max-width: 90%; /* Scale the QR code to fit within the page */
+                        max-height: 90%; /* Ensure it doesn't exceed the page height */
                         width: auto;
                         height: auto;
-                        max-width: 100%;
-                        max-height: 100%;
-                        page-break-inside: avoid;
+                        display: block;
+                        margin: 0 auto; /* Center the image horizontally */
                     }
-                }
+                    @media print {
+                        body {
+                            margin: 0;
+                            padding: 0;
+                            display: block; /* Allow content to expand naturally */
+                        }
+                    }
                 </style>
             </head>
             <body>
-                ${qrCodeHTML}
+                <div id="qrcode">${qrCodeHTML}</div>
             </body>
             </html>
         `);
