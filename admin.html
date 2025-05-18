@@ -22,7 +22,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        #frame {
+        #qr {
             h1{
                 font-size: 40px;
             }
@@ -48,13 +48,47 @@
                 height: auto;
             }
         }
+        #top {
+            display: block; /* Ensure the div is visible */
+            margin-bottom: 20px; /* Add spacing below the div */
+            text-align: center; /* Center-align the content */
+        }
+        #qrcode > div {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px auto;
+            text-align: center;
+            width: 300px; /* Set a fixed width for the QR code container */
+            page-break-after: always; /* Ensure each QR code is on a separate page when printing */
+        }
+
+        #qrcode img {
+            max-width: 100%; /* Scale the QR code to fit within the container */
+            height: auto;
+        }
+        html, body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            overflow: auto; /* Allow scrolling */
+            height: auto; /* Allow the height to adjust based on content */
+            min-height: 100vh; /* Ensure the page covers the full viewport height */
+            display: block; /* Ensure the layout is not restricted by flexbox */
+        }
+
+        #qrcode > div {
+            page-break-after: always; /* Ensure each QR code is on a separate page */
+        }
+       
     </style>
 </head>
 <body>
 
-    <div>
+    <div id="top">
         <h1>QRtimer Code Generator</h1>
-        <p>Enter the place and post to generate a QR code. This page can also be opened with place and post in the query part of the URL.</p>
+        <p>Enter the place and post to generate a QR code. The post field accepts multiple values by comma separation. This page can also be opened with place and post in the query part of the URL. </p>
         <label for="place">Place:</label>
         <input type="text" id="place" placeholder="Enter place" >
 
@@ -99,11 +133,9 @@
         const place = encodeURIComponent(document.getElementById("place").value);
         const posts = document.getElementById("post").value.split(',').map(post => post.trim()); // Split and trim posts
         const qrCodeContainer = document.getElementById("qrcode");
-        const labelContainer = document.getElementById("label");
 
         // Clear previous QR codes
         qrCodeContainer.innerHTML = "";
-        labelContainer.innerHTML = "";
 
         // Generate QR codes for each post
         posts.forEach(post => {
@@ -111,22 +143,25 @@
 
             // Create a container for each QR code and label
             const qrCodeWrapper = document.createElement("div");
-            qrCodeWrapper.style.pageBreakAfter = "always"; // Ensure each QR code is on a separate page when printing
-            qrCodeWrapper.style.marginBottom = "20px";
+            qrCodeWrapper.style.border = "2px solid #ccc";
+            qrCodeWrapper.style.borderRadius = "10px";
+            qrCodeWrapper.style.padding = "20px";
+            qrCodeWrapper.style.margin = "20px auto";
             qrCodeWrapper.style.textAlign = "center";
+            qrCodeWrapper.style.width = "600px"; // Set a fixed width for the container
+            qrCodeWrapper.style.pageBreakAfter = "always"; // Ensure each QR code is on a separate page when printing
 
             const label = document.createElement("div");
             label.innerHTML = `<strong>${decodeURIComponent(place)} QRtimer</strong><br>${decodeURIComponent(post)}`;
             label.style.marginBottom = "10px";
 
             const qrCodeDiv = document.createElement("div");
-            qrCodeDiv.style.display = "inline-block";
 
             // Generate the QR code
             new QRCode(qrCodeDiv, {
                 text: url,
-                width: 800,
-                height: 800,
+                width: 1024,
+                height: 1024,
                 colorDark: "#000000",
                 colorLight: "#ffffff",
                 correctLevel: QRCode.CorrectLevel.H
@@ -155,36 +190,29 @@
             <html>
             <head>
                 <title>Print QR Codes</title>
+
                 <style>
-                    body {
-                        font-size: 42px; /* Adjust font size for printing */
-                        font-family: Arial, sans-serif;
-                        margin: 0;
-                        padding: 0;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-                    }
-                    #qrcode > div {
-                        page-break-after: always; /* Ensure each QR code is on a separate page */
-                    }
-                    #qrcode img {
-                        max-width: 90%; /* Scale the QR code to fit within the page */
-                        max-height: 90%; /* Ensure it doesn't exceed the page height */
-                        width: auto;
-                        height: auto;
-                        display: block;
-                        margin: 0 auto; /* Center the image horizontally */
-                    }
-                    @media print {
-                        body {
-                            margin: 0;
-                            padding: 0;
-                            display: block; /* Allow content to expand naturally */
-                        }
-                    }
-                </style>
+                body {
+                    font-size: 34px;
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    text-align: center;
+                }
+                #qrcode > div {
+                    page-break-after: always; /* Ensure each QR code is on a separate page */
+                    border: none; /* Remove the border for printing */
+                    padding: 0; /* Remove padding for printing */
+                    margin: 20px auto; /* Center the QR code */
+                    /*width: 600px;  Set a fixed width for the QR code container */
+                }
+                #qrcode img {
+                    max-width: 100%; /* Scale the QR code to fit within the container */
+                    height: auto;
+                    display: block;
+                    margin: 0 auto; /* Center the image horizontally */
+                }
+            </style>
             </head>
             <body>
                 <div id="qrcode">${qrCodeHTML}</div>
