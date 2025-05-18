@@ -34,5 +34,15 @@
     <script type=module src="mainScript.js"></script>
 
     <div id="timeTableView">  timeTableView  </div>
+
+    <script>
+        // Check if the URL has query parameters
+        const queryParams = new URLSearchParams(window.location.search);
+
+        // Redirect to the information page if no query parameters are present
+        if (!queryParams.toString()) {
+            window.location.href = "info.html";
+        }
+    </script>
 </body>
 </html>
