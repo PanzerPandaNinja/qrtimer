@@ -62,6 +62,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setLanguage(savedLanguage);
 });
 
+// Demo mode (index.html?...&demo): wipe stored run data so every load behaves like the first visit
+if (urlParams.has('demo')) {
+    try {
+        const keep = ['qrtimer_language', 'qrtimer_uuid'];
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('qrtimer_') && !keep.includes(key)) {
+                localStorage.removeItem(key);
+            }
+        }
+        console.info('Demo mode: stored data cleared');
+    } catch (info) {
+        console.error('Error clearing localStorage:', info);
+    }
+}
+
 try {
     dataArray = getPreviousData(place, today); // Get the previous data from localStorage
     if (!dataArray) { 
